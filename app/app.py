@@ -3,8 +3,9 @@ import docx2txt
 import sqlalchemy
 import pandas as pd
 from flask import Flask, render_template, request
+import os
 
-engine = sqlalchemy.create_engine('postgresql://zttfbnjjfrdkdp:fd9feaef4b2f3d59a6bdbcb17c55918abe6eb0565897802ec89833d6e319d07c@ec2-18-210-64-223.compute-1.amazonaws.com:5432/d1ifcg0i41g47c')
+engine = sqlalchemy.create_engine(os.environ.get("POSTGRES"))
 engine.execute(sqlalchemy.text("CREATE TABLE IF NOT EXISTS companies (company_id SERIAL PRIMARY KEY, company_name VARCHAR (100) NOT NULL)"))
 engine.execute(sqlalchemy.text("CREATE TABLE IF NOT EXISTS questions (question_id SERIAL PRIMARY KEY, question VARCHAR (1000) NOT NULL, answer VARCHAR (2000) NOT NULL, section VARCHAR (500) NOT NULL, number INT NOT NULL, company_name VARCHAR (100), company_id INT NOT NULL, version VARCHAR(20), FOREIGN KEY (company_id) REFERENCES companies (company_id))"))
 

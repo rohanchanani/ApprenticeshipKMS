@@ -1,0 +1,7 @@
+python-docx
+docx2txt
+sqlalchemy
+flask
+gunicorn
+pandas
+psycopg2

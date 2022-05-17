@@ -1,0 +1,40 @@
+<head>
+    <title>Data Extraction</title>
+</head>
+<body>
+    <h1>UPLOAD DOCX FILES</h1>
+    <form action="/" method="post" enctype="multipart/form-data">
+        <input name="file" type="file" accept=".docx" multiple>
+        <button type="submit">Submit</button>
+    <a href="#questions" style="position:fixed; top: 10%; bottom:90%; left:35%; font-weight: bolder;">GO TO QUESTIONS</a>
+    <a href="#companies" style="position:fixed; top: 10%; bottom:90%; left:60%; font-weight: bolder;">GO TO COMPANIES</a>
+    </form>
+    <h1 id="questions">QUESTIONS</h1>
+    <table>
+        <thead>
+            <th>Question number</th>
+            <th>Question</th>
+            <th>Response</th>
+            <th>ADF Version</th>
+            <th>Company</th>
+            <th>Section</th>
+        </thead>
+        {% for question in questions %}
+        <tr>
+            {% for data in question %}
+            <td>{{ data }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    <h1 id="companies">COMPANIES (CLICK ON ROW FOR COMPANY SPECIFIC QUESTIONS</h1>
+    <table style="border: 2px; max-height: 50%;">
+        <thead><th>Company Name</th></thead>
+        {% for company in companies %}
+        <tr style="cursor:pointer;" onclick="document.getElementById('input').value = {{ company[0] }}; document.getElementById('form').submit();"><td>{{ company[1] }}</td></tr>
+        {% endfor %}
+    </table>
+    <form action="/company" method="post" id="form">
+        <input name="company" type="hidden" id="input">
+    </form>
+</body>

@@ -46,12 +46,17 @@ def read_questions(company, version, current_section, i, sql_engine, all_lines, 
 @app.route("/query", methods=["POST"])
 def sql_query():
     query = "SELECT * FROM questions WHERE "
+    i = 0
     for column in request.form.keys():
         if request.form[column].strip() != "":
+            if i:
+                query += " AND "
             if column == "number":
                 query += "number = " + request.form[column]
+                i += 1
                 continue
             query += column + " LIKE '%" + request.form[column].strip() + "%'"
+            i += 1
     print(query)
     try:
         result = engine.execute(sqlalchemy.text(query))

@@ -43,6 +43,23 @@ def read_questions(company, version, current_section, i, sql_engine, all_lines, 
         upload_question_to_database(current_question, current_answer, current_section, company, version, question_number, sql_engine)
         question_number += 1
 
+@app.route("/query", methods=["POST"])
+def sql_query():
+    query = "SELECT * FROM questions WHERE "
+    for column in request.form.keys():
+        if request.form[column].strip() != "":
+            if column == "number":
+                query += "number = " + request.form[column]
+                continue
+            query += column + " LIKE '%" + request.form[column].strip() + "%'"
+    print(query)
+    try:
+        result = engine.execute(sqlalchemy.text(query))
+    except:
+        return "Please enter a valid query"
+    columns = result._metadata.keys
+    return render_template("query.html", columns=columns, rows=list(result)) 
+
 @app.route("/company", methods=["POST"])
 def get_company():
     company_id = int(request.form.get("company"))
@@ -52,9 +69,9 @@ def get_company():
 @app.route("/", methods=["GET", "POST"])
 def homepage():
     if request.method == "GET":
-        current_questions = list(engine.execute(sqlalchemy.text("SELECT number, question, answer, version, company_name, section FROM questions")))
+        current_questions = engine.execute(sqlalchemy.text("SELECT number, question, answer, version, company_name, section FROM questions"))
         current_companies = list(engine.execute(sqlalchemy.text("SELECT * FROM companies")))
-        return render_template("index.html", questions=current_questions, companies=current_companies)
+        return render_template("index.html", questions=list(current_questions), companies=current_companies, columns=current_questions._metadata.keys)
     else:
         for filename, file in request.files.items():
             file.save(filename)

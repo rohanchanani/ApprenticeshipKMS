@@ -6,9 +6,17 @@
     <form action="/" method="post" enctype="multipart/form-data">
         <input name="file" type="file" accept=".docx" multiple>
         <button type="submit">Submit</button>
+    </form>
+    <h1>QUERY DATABASE</h1>
+    <p>Add a search term or phrase to the text box for each column you'd like</p>
+    <form action="/query" method="post">
+        {% for column in columns %}
+        <label>{{column}}: <input type="text" name="{{column}}"></label>
+        {% endfor %}
+        <button type="submit">Submit Query</button>
+    </form>
     <a href="#questions" style="position:fixed; top: 10%; bottom:90%; left:35%; font-weight: bolder;">GO TO QUESTIONS</a>
     <a href="#companies" style="position:fixed; top: 10%; bottom:90%; left:60%; font-weight: bolder;">GO TO COMPANIES</a>
-    </form>
     <h1 id="questions">QUESTIONS</h1>
     <table>
         <thead>

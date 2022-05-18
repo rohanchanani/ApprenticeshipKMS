@@ -2,7 +2,7 @@ import docx
 import docx2txt
 import sqlalchemy
 import pandas as pd
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import os
 
 engine = sqlalchemy.create_engine(os.environ.get("POSTGRES"))
@@ -42,6 +42,11 @@ def read_questions(company, version, current_section, i, sql_engine, all_lines, 
             i += 1
         upload_question_to_database(current_question, current_answer, current_section, company, version, question_number, sql_engine)
         question_number += 1
+
+@app.before_request
+def beforeRequest():
+    if not request.url.startswith('https') and 'DYNO' in os.environ:
+        return redirect(request.url.replace('http', 'https', 1))
 
 @app.route("/query", methods=["POST"])
 def sql_query():

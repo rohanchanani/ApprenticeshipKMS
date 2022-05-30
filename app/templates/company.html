@@ -1,9 +1,9 @@
 <head>
-    <title>{{ questions[0][4] }}</title>
+    <title>{{ questions[0].company }}</title>
 </head>
 
 <body>
-    <h1>Question Data from {{ questions[0][4] }}</h1>
+    <h1>Question Data from {{ questions[0].company }}</h1>
     <table>
         <thead>
             <th>Question number</th>
@@ -15,7 +15,7 @@
         </thead>
         {% for question in questions %}
         <tr>
-            {% for data in question %}
+            {% for data in question.values() %}
             <td>{{ data }}</td>
             {% endfor %}
         </tr>

@@ -29,7 +29,7 @@
         </thead>
         {% for question in questions %}
         <tr>
-            {% for data in question %}
+            {% for data in question.values() %}
             <td>{{ data }}</td>
             {% endfor %}
         </tr>
@@ -39,7 +39,7 @@
     <table style="border: 2px; max-height: 50%;">
         <thead><th>Company Name</th></thead>
         {% for company in companies %}
-        <tr style="cursor:pointer;" onclick="document.getElementById('input').value = {{ company[0] }}; document.getElementById('form').submit();"><td>{{ company[1] }}</td></tr>
+        <tr style="cursor:pointer;" onclick="document.getElementById('input').value = '{{ company.company_name }}'; document.getElementById('form').submit();"><td>{{ company.company_name }}</td></tr>
         {% endfor %}
     </table>
     <form action="/company" method="post" id="form">

@@ -5,3 +5,5 @@ flask
 gunicorn
 pandas
 psycopg2
+pymongo
+dnspython
